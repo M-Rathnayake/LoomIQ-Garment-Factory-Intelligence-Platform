@@ -147,15 +147,32 @@ streamlit run app/Home.py
 
 ## 📈 Results
 
-_To be updated as modules are completed._
+### Module 1: Productivity prediction
 
-| Module | Metric | Score |
+XGBoost, tested on the **last 2 weeks of data** (never seen during training). Scores are for the class that matters: **lines that miss their target**.
+
+| Metric | Baseline (always "met") | XGBoost |
 |---|---|---|
-| Productivity prediction | Accuracy | _TBD_ |
-| Productivity prediction | F1 score | _TBD_ |
-| Defect detection | Precision | _TBD_ |
-| Defect detection | Recall | _TBD_ |
-| Defect detection | DHU estimate error | _TBD_ |
+| F1 (missed target) | 0.00 | **0.50** (finishing 0.61, sewing 0.26) |
+| Recall (missed target) | 0% | **60%** of real misses caught |
+| Precision (missed target) | n/a | **43%** of warnings correct (vs 27% by chance) |
+| ROC-AUC | 0.50 | **0.72** |
+| Accuracy | 73% | 68% |
+
+- Incentive is deliberately **excluded**: it looks like a reward paid *after* good output, so using it would leak the answer.
+- Sewing is weak because a **new garment style with lowered targets** started in the test weeks, a situation the model had never seen. See [notebook 04](notebooks/04_modeling.ipynb) for the full analysis.
+
+![What drives the risk of missing target](reports/figures/shap_importance.png)
+
+### Module 3: Defect detection
+
+_To be updated._
+
+| Metric | Score |
+|---|---|
+| Precision | _TBD_ |
+| Recall | _TBD_ |
+| DHU estimate error | _TBD_ |
 
 ## 💼 Business Impact
 
