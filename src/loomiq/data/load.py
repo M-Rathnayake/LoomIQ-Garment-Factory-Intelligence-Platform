@@ -43,8 +43,8 @@ def load_raw_productivity(path: Path | None = None) -> pd.DataFrame:
             "Download it first (see docs/DATASETS.md)."
         )
 
-    # TODO: Parse the "date" column as datetime (pd.read_csv(..., parse_dates=["date"])).
-    # TODO: Log the shape and a quick summary of missing values.
+    # Kept as-is on purpose: all fixes (dates, typos, dtypes) happen in clean.py
     df = pd.read_csv(path)
     logger.info("Loaded raw productivity data: %s rows, %s columns", *df.shape)
+    logger.info("Missing values: %s", df.isna().sum()[lambda s: s > 0].to_dict())
     return df

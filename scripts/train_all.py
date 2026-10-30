@@ -1,9 +1,11 @@
 """Run the full LoomIQ training pipeline in order.
 
 Steps:
-    1. Train the productivity model (load -> clean -> features -> CV -> save).
-    2. Prepare the fabric defect dataset.
-    3. Train the defect model.
+    1. Clean the raw data and build the feature table.
+    2. Train the productivity model (CV -> refit best -> test -> save).
+    3. Save SHAP explanation figures.
+    4. Prepare the fabric defect dataset.
+    5. Train the defect model.
 
 Usage:
     python scripts/train_all.py
@@ -13,6 +15,9 @@ Usage:
 import argparse
 from collections.abc import Callable
 
+from loomiq.data.clean import run_cleaning
+from loomiq.features.build_features import run_feature_building
+from loomiq.models.explain import save_global_explanations
 from loomiq.models.train_productivity import train_productivity_model
 from loomiq.utils.logger import get_logger
 from loomiq.vision.prepare_dataset import prepare_fabric_dataset
@@ -39,7 +44,10 @@ def main() -> None:
     parser.add_argument("--skip-vision", action="store_true", help="Skip defect model steps.")
     args = parser.parse_args()
 
+    run_step("clean data", run_cleaning)
+    run_step("build features", run_feature_building)
     run_step("productivity model", train_productivity_model)
+    run_step("SHAP explanations", save_global_explanations)
     if not args.skip_vision:
         run_step("prepare fabric dataset", prepare_fabric_dataset)
         run_step("defect model", train_defect_model)

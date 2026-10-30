@@ -12,19 +12,29 @@ paths:
   images: data/images
   models: models
   figures: reports/figures
+  reports: reports
 
 data:
   # UCI "Productivity Prediction of Garment Employees" file name (see docs/DATASETS.md)
   productivity_file: garments_worker_productivity.csv
-  cleaned_file: productivity_clean.csv
+  cleaned_file: garments_clean.csv
   features_file: productivity_features.csv
 
 productivity_model:
   target_column: met_target
+  # The last 20% of dates are held out as a "future" test set
   test_size: 0.2
   cv_folds: 5
-  scoring: f1
+  # F1 for the "missed target" class: catching at-risk lines is what matters
+  scoring: missed_f1
+  # Incentive may be paid because of high output (see notebook 02), so it is
+  # excluded by default to avoid leaking the answer into the model
+  use_incentive: false
   model_file: productivity_model.joblib
+  metrics_file: productivity_metrics.json
+  logistic_regression:
+    C: 1.0
+    max_iter: 2000
   random_forest:
     n_estimators: 300
     max_depth: 8
