@@ -164,6 +164,19 @@ XGBoost, tested on the **last 2 weeks of data** (never seen during training). Sc
 
 ![What drives the risk of missing target](reports/figures/shap_importance.png)
 
+### Module 2: Recommendations
+
+OR-Tools CP-SAT chooses **operator moves** (same department only) and **extra overtime** to minimise the pieces each at-risk line is expected to fall short. Lines that lend operators must still meet their own target.
+
+| Scenario (test weeks) | Result |
+|---|---|
+| One day (4 March 2015) | expected shortfall cut from **1,450 to 66 pieces** (95%) |
+| All 12 test days | **22,127 to 2,618 pieces** short (88% recovered) |
+| Solver | proven optimal plan on every test day |
+
+- The solver found a real factory pattern on its own: **finishing** lines rebalance operators, while **sewing** lines need overtime, because sewing teams that are on track have no spare capacity to lend.
+- Plans are **suggestions for a supervisor to confirm**: they are based on predicted risk, and about 43% of "will miss" warnings are correct. See [notebook 04b](notebooks/04b_recommendations.ipynb).
+
 ### Module 3: Defect detection
 
 _To be updated._

@@ -47,10 +47,27 @@ productivity_model:
     colsample_bytree: 0.8
 
 optimization:
-  # Limits used by the operator / overtime recommender
+  # Standard shift length (8 hours)
+  shift_minutes: 480
+  # Extra overtime per worker that may be recommended, and its step size
   max_overtime_minutes_per_line: 120
+  overtime_step_minutes: 30
+  # Operators that may move into or out of one line
   max_operators_moved_per_line: 5
+  # Costs, in "pieces of output a change must save to be worth it"
+  move_cost_pieces: 2
+  overtime_cost_pieces_per_worker_hour: 0.5
   solver_time_limit_seconds: 10
+  # Typical end-of-day gap (actual minus target productivity) when a line
+  # misses or meets its target. Medians from the training weeks (notebook 04b).
+  # Used to estimate output when no live figure is available.
+  typical_gap:
+    sewing:
+      missed: -0.14
+      met: 0.0
+    finishing:
+      missed: -0.15
+      met: 0.15
 
 vision:
   # "yolo" (object detection on AITEX) or "resnet" (classification on TILDA)
