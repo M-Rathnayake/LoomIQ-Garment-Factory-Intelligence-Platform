@@ -1,0 +1,46 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Virtual environments ---
+venv/
+.venv/
+env/
+
+# --- Secrets ---
+.env
+
+# --- Data (keep folder structure via .gitkeep) ---
+data/**
+!data/**/
+!data/**/.gitkeep
+
+# --- Trained models and weights ---
+models/*
+!models/.gitkeep
+*.pt
+*.pth
+*.onnx
+*.joblib
+*.pkl
+
+# --- Ultralytics / training outputs ---
+runs/
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

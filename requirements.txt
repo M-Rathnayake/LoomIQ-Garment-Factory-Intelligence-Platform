@@ -1,0 +1,31 @@
+# Core data stack
+pandas>=2.1
+numpy>=1.26
+pyyaml>=6.0
+python-dotenv>=1.0
+
+# Machine learning and explainability
+scikit-learn>=1.4
+xgboost>=2.0
+shap>=0.45
+
+# Optimization
+ortools>=9.10
+
+# Computer vision
+torch>=2.2
+torchvision>=0.17
+ultralytics>=8.2
+
+# Dashboard and plotting
+streamlit>=1.35
+plotly>=5.20
+matplotlib>=3.8
+seaborn>=0.13
+
+# AI assistant
+anthropic>=0.40
+
+# Notebooks and testing
+jupyter>=1.0
+pytest>=8.0

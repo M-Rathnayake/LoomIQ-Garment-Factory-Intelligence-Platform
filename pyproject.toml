@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loomiq"
+version = "0.1.0"
+description = "LoomIQ: Garment Factory Intelligence Platform"
+readme = "README.md"
+requires-python = ">=3.11"
+# Only the light core dependencies live here so `pip install -e .` is fast.
+# The full stack (ML, vision, dashboard) is installed from requirements.txt.
+dependencies = [
+    "pandas>=2.1",
+    "numpy>=1.26",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

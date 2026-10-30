@@ -1,0 +1,69 @@
+# LoomIQ project configuration.
+# All paths are relative to the project root.
+
+project:
+  name: LoomIQ
+  random_seed: 42
+
+paths:
+  raw_data: data/raw
+  interim_data: data/interim
+  processed_data: data/processed
+  images: data/images
+  models: models
+  figures: reports/figures
+
+data:
+  # UCI "Productivity Prediction of Garment Employees" file name (see docs/DATASETS.md)
+  productivity_file: garments_worker_productivity.csv
+  cleaned_file: productivity_clean.csv
+  features_file: productivity_features.csv
+
+productivity_model:
+  target_column: met_target
+  test_size: 0.2
+  cv_folds: 5
+  scoring: f1
+  model_file: productivity_model.joblib
+  random_forest:
+    n_estimators: 300
+    max_depth: 8
+    min_samples_leaf: 5
+  xgboost:
+    n_estimators: 400
+    max_depth: 4
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+
+optimization:
+  # Limits used by the operator / overtime recommender
+  max_overtime_minutes_per_line: 120
+  max_operators_moved_per_line: 5
+  solver_time_limit_seconds: 10
+
+vision:
+  # "yolo" (object detection on AITEX) or "resnet" (classification on TILDA)
+  approach: yolo
+  yolo_weights: yolov8n.pt
+  resnet_arch: resnet18
+  image_size: 640
+  epochs: 50
+  batch_size: 16
+  confidence_threshold: 0.25
+  model_file: defect_model.pt
+  classes:
+    - hole
+    - stain
+    - broken_thread
+
+simulation:
+  n_lines: 6
+  hours_per_shift: 8
+  seconds_between_ticks: 2
+  output_file: data/interim/live_stream.csv
+
+assistant:
+  model: claude-sonnet-5-5
+  max_tokens: 800
+  temperature: 0.2

@@ -1,4 +1,3 @@
-# LoomIQ-Garment-Factory-Intelligence-Platform
 # 🧵 LoomIQ: Garment Factory Intelligence Platform
 
 > An AI-powered platform that predicts production line performance, recommends fixes, detects fabric defects, and shows it all on a live factory dashboard.
@@ -136,6 +135,10 @@ make simulate   # start the factory simulator
 make app        # launch the dashboard
 make test       # run tests
 ```
+
+> **Windows without `make`?** Run the commands directly:
+> `python scripts/train_all.py`, `python scripts/run_simulator.py`,
+> `streamlit run app/Home.py`, `pytest`.
 
 Or run the dashboard directly:
 ```bash
