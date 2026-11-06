@@ -6,6 +6,7 @@ python-dotenv>=1.0
 
 # Machine learning and explainability
 scikit-learn>=1.4
+scipy>=1.11
 xgboost>=2.0
 shap>=0.45
 
@@ -18,13 +19,13 @@ torchvision>=0.17
 ultralytics>=8.2
 
 # Dashboard and plotting
-streamlit>=1.35
+streamlit>=1.50
 plotly>=5.20
 matplotlib>=3.8
 seaborn>=0.13
 
 # AI assistant
-anthropic>=0.40
+anthropic>=2.0
 
 # Notebooks and testing
 jupyter>=1.0

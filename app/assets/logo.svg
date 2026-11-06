@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="48" viewBox="0 0 200 48">
+  <!-- Spool of thread -->
+  <rect x="6" y="8" width="30" height="6" rx="3" fill="#2a78d6"/>
+  <rect x="6" y="34" width="30" height="6" rx="3" fill="#2a78d6"/>
+  <rect x="10" y="14" width="22" height="20" rx="2" fill="#eb6834"/>
+  <path d="M10 19 H32 M10 24 H32 M10 29 H32" stroke="#ffffff" stroke-opacity="0.55" stroke-width="1.6"/>
+  <path d="M32 24 C42 24 40 36 50 36" stroke="#eb6834" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <!-- Wordmark: blue works on both light and dark backgrounds -->
+  <text x="58" y="33" font-family="Inter, Segoe UI, sans-serif" font-size="26" font-weight="700" fill="#3987e5">Loom<tspan fill="#eb6834">IQ</tspan></text>
+</svg>

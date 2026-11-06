@@ -55,6 +55,8 @@ optimization:
   # Operators that may move into or out of one line
   max_operators_moved_per_line: 5
   # Costs, in "pieces of output a change must save to be worth it"
+  # Lines within 2% of target count as on track (normal day-to-day wobble)
+  on_track_tolerance: 0.02
   move_cost_pieces: 2
   overtime_cost_pieces_per_worker_hour: 0.5
   solver_time_limit_seconds: 10
@@ -70,27 +72,54 @@ optimization:
       met: 0.15
 
 vision:
-  # "yolo" (object detection on AITEX) or "resnet" (classification on TILDA)
-  approach: yolo
+  # AITEX fabric images, downloaded into data/images/aitex/ (see docs/DATASETS.md)
+  raw_dir: data/images/aitex
+  # Prepared YOLO dataset (tiles + labels + data.yaml)
+  prepared_dir: data/processed/fabric
+  # One class: AITEX has 12 rare defect types (too few examples each), and DHU
+  # only needs a defect count
+  classes:
+    - defect
+  # AITEX images are 4096 x 256 strips, cut into square tiles
+  tile_size: 256
+  tile_stride: 256
+  # Ignore mask specks smaller than this (pixels). Fuzzyballs, the most common
+  # AITEX defect, are only 8-19 pixels, so this must stay small.
+  min_defect_area: 4
+  # Tiny boxes are enlarged to at least this size (pixels); YOLO struggles below it
+  min_box_size: 8
+  # Defect-free tiles kept per defect tile in training (they far outnumber defects)
+  background_ratio: 1.0
+  split: [0.7, 0.15, 0.15]
+  # Pretrained YOLOv8 nano weights (about 6 MB, downloaded by Ultralytics on first use)
   yolo_weights: yolov8n.pt
-  resnet_arch: resnet18
-  image_size: 640
   epochs: 50
   batch_size: 16
-  confidence_threshold: 0.25
+  patience: 15
+  # Chosen on the validation panels (notebook 05): best DHU match with few false alarms
+  confidence_threshold: 0.15
   model_file: defect_model.pt
-  classes:
-    - hole
-    - stain
-    - broken_thread
+  metrics_file: defect_metrics.json
 
 simulation:
-  n_lines: 6
+  # Each simulated day replays the setup of a real day from the test weeks
+  # (never seen by the model), revealed hour by hour.
+  n_lines: 12
   hours_per_shift: 8
+  # Random variation in hourly output (6% = typical hour-to-hour wobble)
+  hourly_noise: 0.06
+  # Chance per line per hour of a machine breakdown or a style change
+  breakdown_probability: 0.04
+  style_change_probability: 0.02
+  # Output drop for the rest of the day after a style change (learning curve)
+  style_change_penalty: 0.10
   seconds_between_ticks: 2
   output_file: data/interim/live_stream.csv
 
 assistant:
-  model: claude-sonnet-5-5
-  max_tokens: 800
-  temperature: 0.2
+  model: claude-opus-5-5
+  max_tokens: 16000
+  # "low" suits short chat answers; raise to "medium" for deeper analysis
+  effort: low
+  # Questions remembered in the chat (older turns are dropped)
+  history_turns: 6

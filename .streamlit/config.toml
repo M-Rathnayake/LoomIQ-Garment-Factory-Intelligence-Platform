@@ -1,0 +1,47 @@
+# LoomIQ dashboard look: a light and a dark theme built from one palette.
+# Switch modes with the ☀️ / 🌙 toggle in the sidebar (light is the default).
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
+
+[client]
+toolbarMode = "viewer"
+
+[theme]
+# Shared by both modes
+font = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap, sans-serif"
+headingFont = "Inter:https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap, sans-serif"
+baseRadius = "0.75rem"
+showWidgetBorder = true
+showSidebarBorder = true
+
+[theme.light]
+primaryColor = "#2a78d6"
+backgroundColor = "#f5f7fa"
+secondaryBackgroundColor = "#ffffff"
+textColor = "#1b1f24"
+linkColor = "#2a78d6"
+borderColor = "#e2e6ec"
+dataframeHeaderBackgroundColor = "#eef1f5"
+chartCategoricalColors = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#6250d6", "#e34948"]
+
+[theme.light.sidebar]
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#f5f7fa"
+
+[theme.dark]
+primaryColor = "#3987e5"
+backgroundColor = "#111317"
+secondaryBackgroundColor = "#1b1e24"
+textColor = "#eef0f3"
+linkColor = "#6da7ec"
+borderColor = "#2a2e36"
+dataframeHeaderBackgroundColor = "#1b1e24"
+chartCategoricalColors = ["#3987e5", "#d95926", "#199e70", "#c98500", "#d55181", "#008300", "#9085e9", "#e66767"]
+
+[theme.dark.sidebar]
+backgroundColor = "#16191e"
+secondaryBackgroundColor = "#20242b"

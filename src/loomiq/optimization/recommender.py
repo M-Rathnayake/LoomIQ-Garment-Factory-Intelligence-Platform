@@ -109,12 +109,16 @@ def estimate_shortfall(lines: pd.DataFrame, settings: dict[str, Any] | None = No
         typical = [gaps[str(dept)][result] for dept, result in zip(lines["department"], outcome)]
         lines["expected_productivity"] = lines["targeted_productivity"] + typical
 
-    lines["available_minutes"] = lines["no_of_workers"] * settings["shift_minutes"] + lines["over_time"]
-    lines["target_pieces"] = lines["targeted_productivity"] * lines["available_minutes"] / lines["smv"]
-    lines["expected_pieces"] = lines["expected_productivity"] * lines["available_minutes"] / lines["smv"]
+    # Live data (the simulator) already knows its pieces; otherwise work them out for the day
+    if not {"target_pieces", "expected_pieces"} <= set(lines.columns):
+        lines["available_minutes"] = lines["no_of_workers"] * settings["shift_minutes"] + lines["over_time"]
+        lines["target_pieces"] = lines["targeted_productivity"] * lines["available_minutes"] / lines["smv"]
+        lines["expected_pieces"] = lines["expected_productivity"] * lines["available_minutes"] / lines["smv"]
     gap = lines["expected_pieces"] - lines["target_pieces"]
-    lines["shortfall_pieces"] = (-gap).clip(lower=0)
-    lines["surplus_pieces"] = gap.clip(lower=0)
+    # Gaps within the tolerance are normal wobble, not worth acting on
+    small = gap.abs() < settings.get("on_track_tolerance", 0) * lines["target_pieces"]
+    lines["shortfall_pieces"] = (-gap).clip(lower=0).mask(small, 0)
+    lines["surplus_pieces"] = gap.clip(lower=0).mask(small, 0)
     return lines
 
 
@@ -141,10 +145,11 @@ def recommend_actions(lines: pd.DataFrame, settings: dict[str, Any] | None = Non
     max_steps = settings["max_overtime_minutes_per_line"] // step
     max_moved = settings["max_operators_moved_per_line"]
 
-    # Pieces one operator makes in a full shift on each line, and pieces one
-    # overtime step adds for the whole line
+    # Pieces one operator makes in the time left today (a full shift when planning
+    # ahead), and pieces one overtime step adds for the whole line
     rate = lines["expected_productivity"] / lines["smv"]  # pieces per worker-minute
-    per_operator = rate * shift
+    minutes_per_operator = lines.get("remaining_minutes_per_worker", pd.Series(shift, index=lines.index))
+    per_operator = rate * minutes_per_operator
     per_overtime_step = rate * step * lines["no_of_workers"]
 
     receivers = lines.index[lines["shortfall_pieces"] > 0].tolist()
@@ -271,6 +276,10 @@ def _build_plan(
         )
 
     table["shortfall_pieces_after"] = (table["target_pieces"] - table["expected_pieces_after"]).clip(lower=0)
+    tolerance = settings.get("on_track_tolerance", 0) * table["target_pieces"]
+    table["shortfall_pieces_after"] = table["shortfall_pieces_after"].mask(
+        table["shortfall_pieces_after"] < tolerance, 0
+    )
     for j in table.index[table["shortfall_pieces_after"] > 0.5]:
         remaining = table.at[j, "shortfall_pieces_after"]
         actions.append(

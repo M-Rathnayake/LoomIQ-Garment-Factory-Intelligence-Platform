@@ -1,0 +1,19 @@
+{
+  "tiles": {
+    "precision": 0.7056725459013116,
+    "recall": 0.36363636363636365,
+    "map50": 0.35199831823447875,
+    "map50_95": 0.14562313863652127
+  },
+  "panels": {
+    "test_panels": 36,
+    "defective_panels": 15,
+    "defective_panels_caught": 0.7333333333333333,
+    "clean_panels_flagged": 0.0,
+    "panel_accuracy": 0.8888888888888888,
+    "true_dhu": 47.22222222222222,
+    "predicted_dhu": 52.77777777777778,
+    "dhu_error": 5.555555555555557
+  },
+  "confidence_threshold": 0.15
+}
